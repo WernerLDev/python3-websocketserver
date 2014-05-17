@@ -1,0 +1,29 @@
+<html>
+
+<head>
+
+<script>
+var ws = new WebSocket("ws://localhost:1234");
+ws.onopen = function()
+{
+	// Web Socket is connected, send data using send()
+	alert("Connection established");
+	ws.send("hallo");
+};
+ws.onmessage = function (evt) 
+{ 
+	var received_msg = evt.data;
+	alert("Message is received..." + received_msg);
+};
+ws.onclose = function()
+{ 
+	// websocket is closed.
+	alert("Connection is closed..."); 
+};
+</script>
+</head>
+
+<body>
+websocket test client
+</body>
+</html>
