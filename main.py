@@ -18,17 +18,24 @@
 from websockets.server import SocketServer
 import signal
 import sys
+import argparse
 
 
 if __name__ == "__main__":
-    server = SocketServer("localhost", 1234)
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--port', default=1234, type=int,
+                        help="The port the server should listen on.")
+    args = parser.parse_args()
 
-    def signalHandler(s, frame):
-        if s == signal.SIGINT:
-            server.stopListening()
-            print('Goodbye')
-            sys.exit(0)
+    if isinstance(args.port, int):
+        server = SocketServer("localhost", args.port)
 
-    signal.signal(signal.SIGINT, signalHandler)
+        def signalHandler(s, frame):
+            if s == signal.SIGINT:
+                server.stopListening()
+                print('Goodbye')
+                sys.exit(0)
 
-    server.startListening()
+        signal.signal(signal.SIGINT, signalHandler)
+
+        server.startListening()
